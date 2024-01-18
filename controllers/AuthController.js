@@ -6,9 +6,7 @@ import { Op } from "sequelize";
 import { check, validationResult } from 'express-validator';
 import Validation from '../validation/AuthValidation.js';
 
-
 class AuthController {
-    
     async login(req, res) {
         try {
             await Promise.all(Validation.loginValidation.map((validation) => validation.run(req)));
@@ -55,6 +53,46 @@ class AuthController {
         }
     }
 
+    /**
+     * @swagger
+     *  /auth/register:
+     *    post:
+     *      summary: Register a new user
+     *      tags: [Authentication]
+     *      requestBody:
+     *        required: true
+     *        content:
+     *          application/json:
+     *            schema:
+     *              type: object
+     *              properties:
+     *                username:
+     *                  type: string
+     *                  description: The username.
+     *                email:
+     *                  type: string
+     *                  description: The email.
+     *                password:
+     *                  type: string
+     *                  description: The password.
+     *              example:
+     *                username: raka
+     *                email: raka@gmail.com
+     *                password: secret123
+     *      responses:
+     *        '201':
+     *          description: Successfully registered
+     *          content:
+     *            application/json:
+     *              example:
+     *                id: 1
+     *                username: raka
+     *                email: raka@gmail.com
+     *        '400':
+     *          description: Bad Request
+     *        '422':
+     *          description: Unprocessable Entity
+     */
     async register(req,res){
         try {
             await Promise.all(Validation.registerValidation.map((validation) => validation.run(req)));

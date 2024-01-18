@@ -6,7 +6,6 @@ import Validation from '../validation/PatientValidation.js';
 import response from "../utils/response.js";
 
 class PatientController{
-   
     async index(req,res){
         try {
             let pageLimit =  10;
@@ -35,9 +34,9 @@ class PatientController{
                     }
                 }
         
-                if(req.query.filter["address"] != ''&& req.query.filter["address"].trim() != undefined) {
+                if(req.query.filter["address"] != ''&& req.query.filter["address"] != undefined) {
                     where.address = {
-                        [Op.like]: '%' + req.query.filter["address"] + '%'
+                        [Op.like]: '%' + req.query.filter["address"].trim() + '%'
                     }
                 }
 
@@ -72,7 +71,7 @@ class PatientController{
                     orderBy = req.query.order
                 }
             }
-            let order 
+            let order = [sortBy,orderBy]
             if(req.query.sort != undefined && req.query.sort != ''){
                 let filterSort = req.query.sort.toLowerCase()
                 // console.log(filterSort)
@@ -204,10 +203,10 @@ class PatientController{
             let findPatient = await Patient.findByPk(patientId)
 
             if (findPatient == null) {
-            return response.error(res, "Patient Not Found", response.HTTP_NOT_FOUND, formattedErrors);
+            return response.error(res, "Patient Not Found", response.HTTP_NOT_FOUND);
             }
 
-            let findStatus = await Status.findByPk(findPatient.id)
+            let findStatus = await Status.findByPk(findPatient.statusId)
 
             let dataStatus = {
                 status: status || findStatus.status,
