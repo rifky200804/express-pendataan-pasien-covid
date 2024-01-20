@@ -208,6 +208,10 @@ class PatientController{
 
             let findStatus = await Status.findByPk(findPatient.statusId)
 
+            if (findStatus == null) {
+                return response.error(res, "Patient Not Found", response.HTTP_NOT_FOUND);
+                }
+
             let dataStatus = {
                 status: status || findStatus.status,
                 inDateAt: inDateAt || findStatus.inDateAt,
@@ -239,6 +243,9 @@ class PatientController{
                 return response.error(res, "Patient Not Found", response.HTTP_NOT_FOUND);
             }
             let statusPatient = await Status.findByPk(patient.statusId)
+            if (patiestatusPatientnt == null) {
+                return response.error(res, "Patient Not Found", response.HTTP_NOT_FOUND);
+            }
             await patient.destroy()
             await statusPatient.destroy()
 
