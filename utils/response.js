@@ -6,7 +6,7 @@ class response {
         res.status(httpCode).json({message:message,data:data,page:page})
     }
 
-    static error(res, message,httpCode = 200,errors = null) {
+    static error(res, message,httpCode = 200,errors = []) {
         res.status(httpCode).json({message,errors:errors})
     }
 }
